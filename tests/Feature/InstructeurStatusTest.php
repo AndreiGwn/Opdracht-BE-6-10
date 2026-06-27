@@ -209,4 +209,82 @@ class InstructeurStatusTest extends TestCase
 
         $this->assertDatabaseHas('instructeurs', ['Id' => $instructeur->Id]);
     }
+
+    /**
+     * Test: Deleting an active vehicle assignment from instructor's list succeeds
+     */
+    public function test_delete_active_vehicle_assignment_succeeds()
+    {
+        $instructeur = Instructeur::create([
+            'Voornaam' => 'Mohammed',
+            'Mobiel' => '06-34291234',
+            'DatumInDienst' => '2010-06-14',
+            'AantalSterren' => 5,
+            'IsActief' => true,
+        ]);
+
+        $voertuig = Voertuig::create([
+            'Kenteken' => 'AU-67-IO',
+            'Type' => 'Golf',
+            'Bouwjaar' => '2017-06-12',
+            'Brandstof' => 'Diesel',
+            'TypeVoertuigId' => $this->typeVoertuig->Id,
+            'IsActief' => true,
+        ]);
+
+        $assignment = VoertuigInstructeur::create([
+            'VoertuigId' => $voertuig->Id,
+            'InstructeurId' => $instructeur->Id,
+            'DatumToekenning' => '2017-06-18',
+            'IsActief' => true,
+        ]);
+
+        $response = $this->delete(route('instructeur.voertuigen.release', [
+            'instructeur_id' => $instructeur->Id,
+            'voertuig_id' => $voertuig->Id,
+        ]));
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success', 'Voertuig succesvol verwijderd.');
+        $this->assertDatabaseMissing('voertuig_instructeurs', ['Id' => $assignment->Id]);
+    }
+
+    /**
+     * Test: Deleting an inactive vehicle assignment from instructor's list fails
+     */
+    public function test_delete_inactive_vehicle_assignment_fails()
+    {
+        $instructeur = Instructeur::create([
+            'Voornaam' => 'Mohammed',
+            'Mobiel' => '06-34291234',
+            'DatumInDienst' => '2010-06-14',
+            'AantalSterren' => 5,
+            'IsActief' => true,
+        ]);
+
+        $voertuig = Voertuig::create([
+            'Kenteken' => 'AU-67-IO',
+            'Type' => 'Golf',
+            'Bouwjaar' => '2017-06-12',
+            'Brandstof' => 'Diesel',
+            'TypeVoertuigId' => $this->typeVoertuig->Id,
+            'IsActief' => true,
+        ]);
+
+        $assignment = VoertuigInstructeur::create([
+            'VoertuigId' => $voertuig->Id,
+            'InstructeurId' => $instructeur->Id,
+            'DatumToekenning' => '2017-06-18',
+            'IsActief' => false,
+        ]);
+
+        $response = $this->delete(route('instructeur.voertuigen.release', [
+            'instructeur_id' => $instructeur->Id,
+            'voertuig_id' => $voertuig->Id,
+        ]));
+
+        $response->assertRedirect();
+        $response->assertSessionHas('error', 'Dit voertuig is niet actief en kan niet worden verwijderd van de lijst.');
+        $this->assertDatabaseHas('voertuig_instructeurs', ['Id' => $assignment->Id]);
+    }
 }
