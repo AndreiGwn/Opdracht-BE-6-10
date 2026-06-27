@@ -163,4 +163,50 @@ class InstructeurStatusTest extends TestCase
         // V1 (claimed by Bert) should remain inactive for Mohammed (Scenario 3)
         $this->assertFalse((bool)$mohammedV1->IsActief);
     }
+
+    /**
+     * Test Scenario 1 of Opdracht 10: Deleting active instructor succeeds and frees vehicles
+     */
+    public function test_delete_active_instructor_succeeds()
+    {
+        $instructeur = Instructeur::create([
+            'Voornaam' => 'Mohammed',
+            'Tussenvoegsel' => 'El',
+            'Achternaam' => 'Yassidi',
+            'Mobiel' => '06-34291234',
+            'DatumInDienst' => '2010-06-14',
+            'AantalSterren' => 5,
+            'IsActief' => true
+        ]);
+
+        $response = $this->delete(route('instructeur.destroy', $instructeur->Id));
+
+        $response->assertRedirect(route('instructeur.index'));
+        $response->assertSessionHas('success', 'Instructeur Mohammed El Yassidi is definitief verwijdert en al zijn eerder toegewezen voertuigen zijn vrijgegeven');
+
+        $this->assertDatabaseMissing('instructeurs', ['Id' => $instructeur->Id]);
+    }
+
+    /**
+     * Test Scenario 2 of Opdracht 10: Deleting inactive (on leave) instructor fails
+     */
+    public function test_delete_inactive_instructor_fails()
+    {
+        $instructeur = Instructeur::create([
+            'Voornaam' => 'Mohammed',
+            'Tussenvoegsel' => 'El',
+            'Achternaam' => 'Yassidi',
+            'Mobiel' => '06-34291234',
+            'DatumInDienst' => '2010-06-14',
+            'AantalSterren' => 5,
+            'IsActief' => false
+        ]);
+
+        $response = $this->delete(route('instructeur.destroy', $instructeur->Id));
+
+        $response->assertRedirect(route('instructeur.index'));
+        $response->assertSessionHas('error', 'Instructeur Mohammed El Yassidi kan niet definitief worden verwijderd, verander eerst de status ziekte/verlof');
+
+        $this->assertDatabaseHas('instructeurs', ['Id' => $instructeur->Id]);
+    }
 }
