@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class VoertuigInstructeurSeeder extends Seeder
 {
@@ -12,6 +13,9 @@ class VoertuigInstructeurSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+        DB::table('voertuig_instructeurs')->delete();
+
         DB::table('voertuig_instructeurs')->insert([
             [
                 'Id' => 1,
@@ -68,5 +72,6 @@ class VoertuigInstructeurSeeder extends Seeder
                 'DatumGewijzigd' => now(),
             ],
         ]);
+        Schema::enableForeignKeyConstraints();
     }
 }
