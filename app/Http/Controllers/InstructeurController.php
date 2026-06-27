@@ -142,6 +142,51 @@ class InstructeurController extends Controller
         return redirect()->back()->with('success', 'Voertuig succesvol vrijgegeven.');
     }
 
+    public function toggleStatus($id)
+    {
+        $instructeur = Instructeur::findOrFail($id);
+
+        if ($instructeur->IsActief) {
+            // Scenario 1: Deactivate instructor due to illness/leave
+            $instructeur->IsActief = false;
+            $instructeur->save();
+
+            // Deactivate all active assignments for this instructor to release their vehicles
+            VoertuigInstructeur::where('InstructeurId', $id)
+                ->where('IsActief', true)
+                ->update(['IsActief' => false]);
+
+            $message = "Instructeur {$instructeur->naam} is ziek/met verlof gemeld";
+        } else {
+            // Scenario 2 & 3: Reactivate instructor
+            $instructeur->IsActief = true;
+            $instructeur->save();
+
+            // Find all previously deactivated assignments for this instructor
+            $inactiveAssignments = VoertuigInstructeur::where('InstructeurId', $id)
+                ->where('IsActief', false)
+                ->get();
+
+            foreach ($inactiveAssignments as $assignment) {
+                // Check if vehicle was reassigned to another active instructor
+                $reassigned = VoertuigInstructeur::where('VoertuigId', $assignment->VoertuigId)
+                    ->where('IsActief', true)
+                    ->where('InstructeurId', '!=', $id)
+                    ->exists();
+
+                if (!$reassigned) {
+                    // Scenario 2: If NOT reassigned, reactivate this vehicle assignment
+                    $assignment->update(['IsActief' => true]);
+                }
+                // Scenario 3: If reassigned, keep IsActief = false so it gets a red cross
+            }
+
+            $message = "Instructeur {$instructeur->naam} is beter/terug van verlof gemeld";
+        }
+
+        return redirect()->back()->with('success', $message);
+    }
+
     public function reassignVoertuig($instructeur_id, $voertuig_id)
     {
         $instructeur = Instructeur::findOrFail($instructeur_id);
