@@ -208,4 +208,24 @@ class InstructeurController extends Controller
 
         return redirect()->back()->with('success', "Het geselecteerde voertuig is weer toegewezen aan {$instructeur->naam}");
     }
+
+    public function destroy($id)
+    {
+        $instructeur = Instructeur::findOrFail($id);
+
+        if (!$instructeur->IsActief) {
+            // Scenario 2 (Unhappy Path): Cannot delete if on leave (band-aid status)
+            return redirect()
+                ->route('instructeur.index')
+                ->with('error', "Instructeur {$instructeur->naam} kan niet definitief worden verwijderd, verander eerst de status ziekte/verlof");
+        }
+
+        // Scenario 1 (Happy Path): Delete instructor and free vehicles
+        $naam = $instructeur->naam;
+        $instructeur->delete();
+
+        return redirect()
+            ->route('instructeur.index')
+            ->with('success', "Instructeur {$naam} is definitief verwijdert en al zijn eerder toegewezen voertuigen zijn vrijgegeven");
+    }
 }
