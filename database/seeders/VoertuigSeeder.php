@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +22,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 1,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 2,
@@ -34,7 +33,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 2,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 3,
@@ -45,7 +44,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 1,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 4,
@@ -56,7 +55,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 1,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 5,
@@ -67,7 +66,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 2,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 6,
@@ -78,7 +77,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 1,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 7,
@@ -89,7 +88,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 2,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 8,
@@ -100,7 +99,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 1,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 9,
@@ -111,7 +110,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 4,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 10,
@@ -122,7 +121,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 4,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 11,
@@ -133,7 +132,7 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 4,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 12,
@@ -144,8 +143,8 @@ class VoertuigSeeder extends Seeder
                 'TypeVoertuigId' => 3,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
-            ]
+                'DatumGewijzigd' => now(),
+            ],
         ]);
     }
 }

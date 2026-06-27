@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +23,7 @@ class InstructeurSeeder extends Seeder
                 'AantalSterren' => 3,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 2,
@@ -36,7 +35,7 @@ class InstructeurSeeder extends Seeder
                 'AantalSterren' => 1,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 3,
@@ -48,7 +47,7 @@ class InstructeurSeeder extends Seeder
                 'AantalSterren' => 3,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 4,
@@ -60,7 +59,7 @@ class InstructeurSeeder extends Seeder
                 'AantalSterren' => 4,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 5,
@@ -72,8 +71,8 @@ class InstructeurSeeder extends Seeder
                 'AantalSterren' => 5,
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
-            ]
+                'DatumGewijzigd' => now(),
+            ],
         ]);
     }
 }

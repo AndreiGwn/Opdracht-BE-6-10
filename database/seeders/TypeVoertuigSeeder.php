@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +19,7 @@ class TypeVoertuigSeeder extends Seeder
                 'Rijbewijscategorie' => 'B',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 2,
@@ -28,7 +27,7 @@ class TypeVoertuigSeeder extends Seeder
                 'Rijbewijscategorie' => 'C',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 3,
@@ -36,7 +35,7 @@ class TypeVoertuigSeeder extends Seeder
                 'Rijbewijscategorie' => 'D',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 4,
@@ -44,8 +43,8 @@ class TypeVoertuigSeeder extends Seeder
                 'Rijbewijscategorie' => 'AM',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
-            ]
+                'DatumGewijzigd' => now(),
+            ],
         ]);
     }
 }

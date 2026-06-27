@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +20,7 @@ class VoertuigInstructeurSeeder extends Seeder
                 'DatumToekenning' => '2017-06-18',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 2,
@@ -30,7 +29,7 @@ class VoertuigInstructeurSeeder extends Seeder
                 'DatumToekenning' => '2021-09-26',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 3,
@@ -39,7 +38,7 @@ class VoertuigInstructeurSeeder extends Seeder
                 'DatumToekenning' => '2021-09-27',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 4,
@@ -48,7 +47,7 @@ class VoertuigInstructeurSeeder extends Seeder
                 'DatumToekenning' => '2022-08-01',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 5,
@@ -57,7 +56,7 @@ class VoertuigInstructeurSeeder extends Seeder
                 'DatumToekenning' => '2019-08-30',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
+                'DatumGewijzigd' => now(),
             ],
             [
                 'Id' => 6,
@@ -66,8 +65,8 @@ class VoertuigInstructeurSeeder extends Seeder
                 'DatumToekenning' => '2020-02-02',
                 'IsActief' => true,
                 'DatumAangemaakt' => now(),
-                'DatumGewijzigd' => now()
-            ]
+                'DatumGewijzigd' => now(),
+            ],
         ]);
     }
 }
