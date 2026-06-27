@@ -44,4 +44,123 @@ class InstructeurController extends Controller
             ->route('instructeur.index')
             ->with('success', "Instructeur {$instructeur->naam} is succesvol bijgewerkt.");
     }
+
+    public function voertuigen($id)
+    {
+        $instructeur = Instructeur::findOrFail($id);
+
+        if (!$instructeur->IsActief) {
+            // Inactive instructor has empty list
+            $paginatedVoertuigen = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 4);
+        } else {
+            // Find all assignments for this instructor (active and inactive)
+            $pivotRecords = VoertuigInstructeur::where('InstructeurId', $id)
+                ->with('voertuig.typeVoertuig')
+                ->paginate(4);
+
+            // Determine if each assignment is currently reassigned to someone else
+            foreach ($pivotRecords as $record) {
+                $record->is_reassigned = false;
+                if (!$record->IsActief) {
+                    $activeForSomeoneElse = VoertuigInstructeur::where('VoertuigId', $record->VoertuigId)
+                        ->where('IsActief', true)
+                        ->where('InstructeurId', '!=', $id)
+                        ->exists();
+                    if ($activeForSomeoneElse) {
+                        $record->is_reassigned = true;
+                    }
+                }
+            }
+            $paginatedVoertuigen = $pivotRecords;
+        }
+
+        // Fetch list of all available vehicles to allow manual assignment
+        $activeVoertuigIds = VoertuigInstructeur::where('IsActief', true)
+            ->whereHas('instructeur', function ($query) {
+                $query->where('IsActief', true);
+            })
+            ->pluck('VoertuigId');
+
+        $alleBeschikbareVoertuigen = Voertuig::whereNotIn('Id', $activeVoertuigIds)
+            ->with('typeVoertuig')
+            ->get();
+
+        return view('instructeur.voertuigen', compact('instructeur', 'paginatedVoertuigen', 'alleBeschikbareVoertuigen'));
+    }
+
+    public function beschikbaarVoertuigen()
+    {
+        // Get all active assignments
+        $activeVoertuigIds = VoertuigInstructeur::where('IsActief', true)
+            ->whereHas('instructeur', function ($query) {
+                $query->where('IsActief', true);
+            })
+            ->pluck('VoertuigId');
+
+        // Available vehicles are those not currently active for any active instructor
+        $beschikbareVoertuigen = Voertuig::whereNotIn('Id', $activeVoertuigIds)
+            ->with('typeVoertuig')
+            ->paginate(4);
+
+        return view('instructeur.beschikbaar', compact('beschikbareVoertuigen'));
+    }
+
+    public function assignVoertuig(Request $request, $instructeur_id)
+    {
+        $request->validate([
+            'VoertuigId' => 'required|exists:voertuigs,Id'
+        ]);
+
+        $instructeur = Instructeur::findOrFail($instructeur_id);
+
+        if (!$instructeur->IsActief) {
+            return redirect()->back()->with('error', 'Kan geen voertuig toewijzen aan een inactieve instructeur.');
+        }
+
+        // Deactivate any existing active assignment for this vehicle
+        VoertuigInstructeur::where('VoertuigId', $request->VoertuigId)
+            ->where('IsActief', true)
+            ->update(['IsActief' => false]);
+
+        // Create or update the assignment for this instructor
+        VoertuigInstructeur::updateOrCreate(
+            ['VoertuigId' => $request->VoertuigId, 'InstructeurId' => $instructeur_id],
+            ['IsActief' => true, 'DatumToekenning' => now()]
+        );
+
+        return redirect()->back()->with('success', 'Voertuig succesvol toegewezen.');
+    }
+
+    public function releaseVoertuig($instructeur_id, $voertuig_id)
+    {
+        $assignment = VoertuigInstructeur::where('VoertuigId', $voertuig_id)
+            ->where('InstructeurId', $instructeur_id)
+            ->firstOrFail();
+
+        $assignment->update(['IsActief' => false]);
+
+        return redirect()->back()->with('success', 'Voertuig succesvol vrijgegeven.');
+    }
+
+    public function reassignVoertuig($instructeur_id, $voertuig_id)
+    {
+        $instructeur = Instructeur::findOrFail($instructeur_id);
+
+        if (!$instructeur->IsActief) {
+            return redirect()->back()->with('error', 'Kan geen voertuig toewijzen aan een inactieve instructeur.');
+        }
+
+        // Deactivate other active assignments for this vehicle
+        VoertuigInstructeur::where('VoertuigId', $voertuig_id)
+            ->where('IsActief', true)
+            ->update(['IsActief' => false]);
+
+        // Reactivate Mohammed's (or this instructor's) assignment
+        VoertuigInstructeur::updateOrCreate(
+            ['VoertuigId' => $voertuig_id, 'InstructeurId' => $instructeur_id],
+            ['IsActief' => true, 'DatumToekenning' => now()]
+        );
+
+        return redirect()->back()->with('success', "Het geselecteerde voertuig is weer toegewezen aan {$instructeur->naam}");
+    }
 }
