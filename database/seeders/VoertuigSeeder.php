@@ -11,6 +11,8 @@ class VoertuigSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+    public function run(): void
+    {
         DB::table('voertuigs')->insert([
             [
                 'Id' => 1,
@@ -145,4 +147,5 @@ class VoertuigSeeder extends Seeder
                 'DatumGewijzigd' => now()
             ]
         ]);
+    }
 }

@@ -11,6 +11,8 @@ class InstructeurSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+    public function run(): void
+    {
         DB::table('instructeurs')->insert([
             [
                 'Id' => 1,
@@ -73,4 +75,5 @@ class InstructeurSeeder extends Seeder
                 'DatumGewijzigd' => now()
             ]
         ]);
+    }
 }
