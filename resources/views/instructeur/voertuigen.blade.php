@@ -96,11 +96,11 @@
                                 @endif
                             </td>
                             <td style="text-align: center;">
-                                <form action="{{ route('instructeur.voertuigen.release', ['instructeur_id' => $instructeur->Id, 'voertuig_id' => $voertuig->Id]) }}" method="POST" style="display: inline;" onsubmit="return confirm('Weet u zeker dat u dit voertuig wilt verwijderen?')">
+                                <form action="{{ route('instructeur.voertuigen.release', ['instructeur_id' => $instructeur->Id, 'voertuig_id' => $voertuig->Id]) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="action-btn btn-delete" title="Verwijderen" @if(!$record->IsActief) style="opacity: 0.5;" @endif>
-                                        <i class="fa-solid fa-trash-can"></i> Verwijderen
+                                        <i class="fa-solid fa-trash-can"></i>
                                     </button>
                                 </form>
                             </td>
