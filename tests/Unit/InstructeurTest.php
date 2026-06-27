@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Models\Instructeur;
+use Tests\TestCase;
 
 class InstructeurTest extends TestCase
 {
@@ -12,7 +12,7 @@ class InstructeurTest extends TestCase
         $instructeur = new Instructeur([
             'Voornaam' => 'Leroy',
             'Tussenvoegsel' => null,
-            'Achternaam' => 'Boerhaven'
+            'Achternaam' => 'Boerhaven',
         ]);
 
         $this->assertEquals('Leroy Boerhaven', $instructeur->naam);
@@ -23,7 +23,7 @@ class InstructeurTest extends TestCase
         $instructeur = new Instructeur([
             'Voornaam' => 'Yoeri',
             'Tussenvoegsel' => 'Van',
-            'Achternaam' => 'Veen'
+            'Achternaam' => 'Veen',
         ]);
 
         $this->assertEquals('Yoeri Van Veen', $instructeur->naam);

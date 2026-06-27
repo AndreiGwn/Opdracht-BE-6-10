@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Models\Voertuig;
+use Tests\TestCase;
 
 class VoertuigTest extends TestCase
 {
@@ -12,7 +12,7 @@ class VoertuigTest extends TestCase
         $voertuig = new Voertuig([
             'Kenteken' => 'AU-67-IO',
             'Type' => 'Golf',
-            'Brandstof' => 'Diesel'
+            'Brandstof' => 'Diesel',
         ]);
 
         $this->assertEquals('AU-67-IO', $voertuig->Kenteken);

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Models\TypeVoertuig;
+use Tests\TestCase;
 
 class TypeVoertuigTest extends TestCase
 {
@@ -11,7 +11,7 @@ class TypeVoertuigTest extends TestCase
     {
         $typeVoertuig = new TypeVoertuig([
             'TypeVoertuig' => 'Personenauto',
-            'Rijbewijscategorie' => 'B'
+            'Rijbewijscategorie' => 'B',
         ]);
 
         $this->assertEquals('Personenauto', $typeVoertuig->TypeVoertuig);

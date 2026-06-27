@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Models\VoertuigInstructeur;
+use Tests\TestCase;
 
 class VoertuigInstructeurTest extends TestCase
 {
@@ -12,7 +12,7 @@ class VoertuigInstructeurTest extends TestCase
         $pivot = new VoertuigInstructeur([
             'VoertuigId' => 1,
             'InstructeurId' => 5,
-            'DatumToekenning' => '2017-06-18'
+            'DatumToekenning' => '2017-06-18',
         ]);
 
         $this->assertEquals(1, $pivot->VoertuigId);
