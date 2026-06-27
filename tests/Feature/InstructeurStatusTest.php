@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use App\Models\Instructeur;
+use App\Models\TypeVoertuig;
 use App\Models\Voertuig;
 use App\Models\VoertuigInstructeur;
-use App\Models\TypeVoertuig;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class InstructeurStatusTest extends TestCase
 {
@@ -22,7 +22,7 @@ class InstructeurStatusTest extends TestCase
         // Create a base type vehicle for testing
         $this->typeVoertuig = TypeVoertuig::create([
             'TypeVoertuig' => 'Personenauto',
-            'Rijbewijscategorie' => 'B'
+            'Rijbewijscategorie' => 'B',
         ]);
     }
 
@@ -39,7 +39,7 @@ class InstructeurStatusTest extends TestCase
             'Mobiel' => '06-34291234',
             'DatumInDienst' => '2010-06-14',
             'AantalSterren' => 5,
-            'IsActief' => true
+            'IsActief' => true,
         ]);
 
         // 2. Create vehicle and assign to instructor
@@ -49,14 +49,14 @@ class InstructeurStatusTest extends TestCase
             'Bouwjaar' => '2017-06-12',
             'Brandstof' => 'Diesel',
             'TypeVoertuigId' => $this->typeVoertuig->Id,
-            'IsActief' => true
+            'IsActief' => true,
         ]);
 
         $assignment = VoertuigInstructeur::create([
             'VoertuigId' => $voertuig->Id,
             'InstructeurId' => $instructeur->Id,
             'DatumToekenning' => '2017-06-18',
-            'IsActief' => true
+            'IsActief' => true,
         ]);
 
         // 3. Post to toggle status route
@@ -69,8 +69,8 @@ class InstructeurStatusTest extends TestCase
         $instructeur->refresh();
         $assignment->refresh();
 
-        $this->assertFalse((bool)$instructeur->IsActief);
-        $this->assertFalse((bool)$assignment->IsActief);
+        $this->assertFalse((bool) $instructeur->IsActief);
+        $this->assertFalse((bool) $assignment->IsActief);
     }
 
     /**
@@ -87,7 +87,7 @@ class InstructeurStatusTest extends TestCase
             'Mobiel' => '06-34291234',
             'DatumInDienst' => '2010-06-14',
             'AantalSterren' => 5,
-            'IsActief' => false
+            'IsActief' => false,
         ]);
 
         // 2. Create another active instructor (Bert)
@@ -98,7 +98,7 @@ class InstructeurStatusTest extends TestCase
             'Mobiel' => '06-48293823',
             'DatumInDienst' => '2023-01-10',
             'AantalSterren' => 4,
-            'IsActief' => true
+            'IsActief' => true,
         ]);
 
         // 3. Create two vehicles that WERE assigned to Mohammed
@@ -108,7 +108,7 @@ class InstructeurStatusTest extends TestCase
             'Bouwjaar' => '2017-06-12',
             'Brandstof' => 'Diesel',
             'TypeVoertuigId' => $this->typeVoertuig->Id,
-            'IsActief' => true
+            'IsActief' => true,
         ]);
 
         $v2 = Voertuig::create([
@@ -117,7 +117,7 @@ class InstructeurStatusTest extends TestCase
             'Bouwjaar' => '2022-03-21',
             'Brandstof' => 'Benzine',
             'TypeVoertuigId' => $this->typeVoertuig->Id,
-            'IsActief' => true
+            'IsActief' => true,
         ]);
 
         // Mohammed's inactive assignments
@@ -125,14 +125,14 @@ class InstructeurStatusTest extends TestCase
             'VoertuigId' => $v1->Id,
             'InstructeurId' => $mohammed->Id,
             'DatumToekenning' => '2017-06-18',
-            'IsActief' => false
+            'IsActief' => false,
         ]);
 
         $mohammedV2 = VoertuigInstructeur::create([
             'VoertuigId' => $v2->Id,
             'InstructeurId' => $mohammed->Id,
             'DatumToekenning' => '2020-02-02',
-            'IsActief' => false
+            'IsActief' => false,
         ]);
 
         // 4. Reassign V1 to Bert during Mohammed's leave
@@ -140,7 +140,7 @@ class InstructeurStatusTest extends TestCase
             'VoertuigId' => $v1->Id,
             'InstructeurId' => $bert->Id,
             'DatumToekenning' => '2026-01-01',
-            'IsActief' => true
+            'IsActief' => true,
         ]);
 
         // 5. Post to toggle status route (reactivate Mohammed)
@@ -155,13 +155,13 @@ class InstructeurStatusTest extends TestCase
         $mohammedV2->refresh();
 
         // Mohammed should be active now
-        $this->assertTrue((bool)$mohammed->IsActief);
+        $this->assertTrue((bool) $mohammed->IsActief);
 
         // V2 (unclaimed) should be active for Mohammed again (Scenario 2)
-        $this->assertTrue((bool)$mohammedV2->IsActief);
+        $this->assertTrue((bool) $mohammedV2->IsActief);
 
         // V1 (claimed by Bert) should remain inactive for Mohammed (Scenario 3)
-        $this->assertFalse((bool)$mohammedV1->IsActief);
+        $this->assertFalse((bool) $mohammedV1->IsActief);
     }
 
     /**
@@ -176,7 +176,7 @@ class InstructeurStatusTest extends TestCase
             'Mobiel' => '06-34291234',
             'DatumInDienst' => '2010-06-14',
             'AantalSterren' => 5,
-            'IsActief' => true
+            'IsActief' => true,
         ]);
 
         $response = $this->delete(route('instructeur.destroy', $instructeur->Id));
@@ -199,7 +199,7 @@ class InstructeurStatusTest extends TestCase
             'Mobiel' => '06-34291234',
             'DatumInDienst' => '2010-06-14',
             'AantalSterren' => 5,
-            'IsActief' => false
+            'IsActief' => false,
         ]);
 
         $response = $this->delete(route('instructeur.destroy', $instructeur->Id));
