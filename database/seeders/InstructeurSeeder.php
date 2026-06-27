@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class InstructeurSeeder extends Seeder
 {
@@ -12,6 +13,9 @@ class InstructeurSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+        DB::table('instructeurs')->delete();
+
         DB::table('instructeurs')->insert([
             [
                 'Id' => 1,
@@ -74,5 +78,6 @@ class InstructeurSeeder extends Seeder
                 'DatumGewijzigd' => now(),
             ],
         ]);
+        Schema::enableForeignKeyConstraints();
     }
 }
