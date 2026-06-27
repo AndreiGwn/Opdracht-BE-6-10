@@ -62,7 +62,7 @@
                         <th>Type Voertuig</th>
                         <th>Rijbewijscategorie</th>
                         <th style="text-align: center;">Toegewezen</th>
-                        <th style="text-align: center;">Vrijgeven / Actie</th>
+                        <th style="text-align: center;">Verwijderen</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,17 +96,13 @@
                                 @endif
                             </td>
                             <td style="text-align: center;">
-                                @if($record->IsActief)
-                                    <form action="{{ route('instructeur.voertuigen.release', ['instructeur_id' => $instructeur->Id, 'voertuig_id' => $voertuig->Id]) }}" method="POST" style="display: inline;" onsubmit="return confirm('Weet u zeker dat u de toewijzing van dit voertuig wilt intrekken?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-btn btn-delete" title="Toewijzing intrekken">
-                                            <i class="fa-solid fa-link-slash"></i> Release
-                                        </button>
-                                    </form>
-                                @else
-                                    <span style="color: var(--text-secondary); opacity: 0.5;">Vrijgegeven</span>
-                                @endif
+                                <form action="{{ route('instructeur.voertuigen.release', ['instructeur_id' => $instructeur->Id, 'voertuig_id' => $voertuig->Id]) }}" method="POST" style="display: inline;" onsubmit="return confirm('Weet u zeker dat u dit voertuig wilt verwijderen?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="action-btn btn-delete" title="Verwijderen" @if(!$record->IsActief) style="opacity: 0.5;" @endif>
+                                        <i class="fa-solid fa-trash-can"></i> Verwijderen
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @empty
