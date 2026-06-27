@@ -138,9 +138,13 @@ class InstructeurController extends Controller
             ->where('InstructeurId', $instructeur_id)
             ->firstOrFail();
 
-        $assignment->update(['IsActief' => false]);
+        if (! $assignment->IsActief) {
+            return redirect()->back()->with('error', 'Dit voertuig is niet actief en kan niet worden verwijderd van de lijst.');
+        }
 
-        return redirect()->back()->with('success', 'Voertuig succesvol vrijgegeven.');
+        $assignment->delete();
+
+        return redirect()->back()->with('success', 'Voertuig succesvol verwijderd.');
     }
 
     public function toggleStatus($id)
