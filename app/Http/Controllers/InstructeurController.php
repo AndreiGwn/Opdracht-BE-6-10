@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Instructeur;
 use App\Models\Voertuig;
 use App\Models\VoertuigInstructeur;
-use App\Models\TypeVoertuig;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class InstructeurController extends Controller
 {
@@ -15,12 +14,14 @@ class InstructeurController extends Controller
     {
         // Instructeurs in dienst, gesorteerd op sterren (descending) met paginering van 4 items
         $instructeurs = Instructeur::orderBy('AantalSterren', 'desc')->paginate(4);
+
         return view('instructeur.index', compact('instructeurs'));
     }
 
     public function edit($id)
     {
         $instructeur = Instructeur::findOrFail($id);
+
         return view('instructeur.edit', compact('instructeur'));
     }
 
@@ -49,9 +50,9 @@ class InstructeurController extends Controller
     {
         $instructeur = Instructeur::findOrFail($id);
 
-        if (!$instructeur->IsActief) {
+        if (! $instructeur->IsActief) {
             // Inactive instructor has empty list
-            $paginatedVoertuigen = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 4);
+            $paginatedVoertuigen = new LengthAwarePaginator([], 0, 4);
         } else {
             // Find all assignments for this instructor (active and inactive)
             $pivotRecords = VoertuigInstructeur::where('InstructeurId', $id)
@@ -61,7 +62,7 @@ class InstructeurController extends Controller
             // Determine if each assignment is currently reassigned to someone else
             foreach ($pivotRecords as $record) {
                 $record->is_reassigned = false;
-                if (!$record->IsActief) {
+                if (! $record->IsActief) {
                     $activeForSomeoneElse = VoertuigInstructeur::where('VoertuigId', $record->VoertuigId)
                         ->where('IsActief', true)
                         ->where('InstructeurId', '!=', $id)
@@ -108,12 +109,12 @@ class InstructeurController extends Controller
     public function assignVoertuig(Request $request, $instructeur_id)
     {
         $request->validate([
-            'VoertuigId' => 'required|exists:voertuigs,Id'
+            'VoertuigId' => 'required|exists:voertuigs,Id',
         ]);
 
         $instructeur = Instructeur::findOrFail($instructeur_id);
 
-        if (!$instructeur->IsActief) {
+        if (! $instructeur->IsActief) {
             return redirect()->back()->with('error', 'Kan geen voertuig toewijzen aan een inactieve instructeur.');
         }
 
@@ -174,7 +175,7 @@ class InstructeurController extends Controller
                     ->where('InstructeurId', '!=', $id)
                     ->exists();
 
-                if (!$reassigned) {
+                if (! $reassigned) {
                     // Scenario 2: If NOT reassigned, reactivate this vehicle assignment
                     $assignment->update(['IsActief' => true]);
                 }
@@ -191,7 +192,7 @@ class InstructeurController extends Controller
     {
         $instructeur = Instructeur::findOrFail($instructeur_id);
 
-        if (!$instructeur->IsActief) {
+        if (! $instructeur->IsActief) {
             return redirect()->back()->with('error', 'Kan geen voertuig toewijzen aan een inactieve instructeur.');
         }
 
@@ -213,7 +214,7 @@ class InstructeurController extends Controller
     {
         $instructeur = Instructeur::findOrFail($id);
 
-        if (!$instructeur->IsActief) {
+        if (! $instructeur->IsActief) {
             // Scenario 2 (Unhappy Path): Cannot delete if on leave (band-aid status)
             return redirect()
                 ->route('instructeur.index')
