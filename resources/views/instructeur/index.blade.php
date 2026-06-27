@@ -68,7 +68,7 @@
                             </a>
                         </td>
                         <td style="text-align: center;">
-                            <form action="{{ route('instructeur.destroy', $instructeur->Id) }}" method="POST" onsubmit="return confirm('Weet u zeker dat u deze instructeur definitief wilt verwijderen?')" style="display: inline;">
+                            <form action="{{ route('instructeur.destroy', $instructeur->Id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="action-btn btn-delete" title="Definitief verwijderen">
