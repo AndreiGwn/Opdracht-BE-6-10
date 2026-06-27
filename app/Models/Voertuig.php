@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Voertuig extends Model
 {
     protected $table = 'voertuigs';
+
     protected $primaryKey = 'Id';
 
     const CREATED_AT = 'DatumAangemaakt';
+
     const UPDATED_AT = 'DatumGewijzigd';
 
     protected $fillable = [
@@ -19,7 +21,7 @@ class Voertuig extends Model
         'Brandstof',
         'TypeVoertuigId',
         'IsActief',
-        'Opmerking'
+        'Opmerking',
     ];
 
     public function typeVoertuig()
@@ -30,7 +32,7 @@ class Voertuig extends Model
     public function instructeurs()
     {
         return $this->belongsToMany(Instructeur::class, 'voertuig_instructeurs', 'VoertuigId', 'InstructeurId')
-                    ->withPivot('Id', 'DatumToekenning', 'IsActief', 'Opmerking')
-                    ->withTimestamps('DatumAangemaakt', 'DatumGewijzigd');
+            ->withPivot('Id', 'DatumToekenning', 'IsActief', 'Opmerking')
+            ->withTimestamps('DatumAangemaakt', 'DatumGewijzigd');
     }
 }

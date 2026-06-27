@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Instructeur extends Model
 {
     protected $table = 'instructeurs';
+
     protected $primaryKey = 'Id';
 
     const CREATED_AT = 'DatumAangemaakt';
+
     const UPDATED_AT = 'DatumGewijzigd';
 
     protected $fillable = [
@@ -20,20 +22,20 @@ class Instructeur extends Model
         'DatumInDienst',
         'AantalSterren',
         'IsActief',
-        'Opmerking'
+        'Opmerking',
     ];
 
     public function getNaamAttribute()
     {
-        return $this->Voornaam . 
-            ($this->Tussenvoegsel ? ' ' . $this->Tussenvoegsel : '') . 
-            ($this->Achternaam ? ' ' . $this->Achternaam : '');
+        return $this->Voornaam.
+            ($this->Tussenvoegsel ? ' '.$this->Tussenvoegsel : '').
+            ($this->Achternaam ? ' '.$this->Achternaam : '');
     }
 
     public function voertuigen()
     {
         return $this->belongsToMany(Voertuig::class, 'voertuig_instructeurs', 'InstructeurId', 'VoertuigId')
-                    ->withPivot('Id', 'DatumToekenning', 'IsActief', 'Opmerking')
-                    ->withTimestamps('DatumAangemaakt', 'DatumGewijzigd');
+            ->withPivot('Id', 'DatumToekenning', 'IsActief', 'Opmerking')
+            ->withTimestamps('DatumAangemaakt', 'DatumGewijzigd');
     }
 }

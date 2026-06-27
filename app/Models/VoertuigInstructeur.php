@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class VoertuigInstructeur extends Model
 {
     protected $table = 'voertuig_instructeurs';
+
     protected $primaryKey = 'Id';
 
     const CREATED_AT = 'DatumAangemaakt';
+
     const UPDATED_AT = 'DatumGewijzigd';
 
     protected $fillable = [
@@ -17,7 +19,7 @@ class VoertuigInstructeur extends Model
         'InstructeurId',
         'DatumToekenning',
         'IsActief',
-        'Opmerking'
+        'Opmerking',
     ];
 
     public function voertuig()
